@@ -2,90 +2,427 @@
 <html lang="tr">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>İletişim | Balçiçeğim Anaokulu</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>Bal Çiçeğim Anaokulu | Kartal</title>
     <link href="https://fonts.googleapis.com/css2?family=Quicksand:wght@400;600;700&display=swap" rel="stylesheet">
     <script src="https://cdn.tailwindcss.com"></script>
-</head>
-<body class="bg-gray-50 font-['Quicksand']">
+    <link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    
+    <style>
+        html, body { overflow-x: hidden; width: 100%; position: relative; touch-action: manipulation; }
+        body { font-family: 'Quicksand', sans-serif; scroll-behavior: smooth; background-color: #fffdf5; }
+        
+        /* KIRMIZI VE KALIN SCROLLBAR */
+        ::-webkit-scrollbar { width: 16px; }
+        ::-webkit-scrollbar-track { background: #f1f1f1; }
+        ::-webkit-scrollbar-thumb { background: #ff0000; border-radius: 8px; border: 3px solid #f1f1f1; }
+        ::-webkit-scrollbar-thumb:hover { background: #cc0000; }
 
-    <nav class="p-6 bg-white shadow-sm flex justify-between items-center sticky top-0 z-50">
-        <div class="text-2xl font-bold text-pink-500">🌸 Balçiçeğim <span class="text-yellow-500">Anaokulu</span></div>
-        <div class="hidden md:flex space-x-8 font-semibold text-gray-600">
-            <a href="index.html" class="hover:text-pink-500">Ana Sayfa</a>
-            <a href="hakkimizda.html" class="hover:text-pink-500">Hakkımızda</a>
-            <a href="galeri.html" class="hover:text-pink-500">Galerimiz</a>
-            <a href="iletisim.html" class="text-white bg-pink-500 px-6 py-2 rounded-full">İletişim</a>
+        #flower-shower { position: fixed; top: 0; left: 0; width: 100%; height: 100%; pointer-events: none; z-index: 9999; }
+        .flower { position: absolute; top: -50px; font-size: 20px; animation: fall linear forwards; }
+        @keyframes fall { to { transform: translateY(110vh) rotate(360deg); } }
+
+        /* WHATSAPP SABİT BUTON */
+        .wp-float {
+            position: fixed; width: 60px; height: 60px; bottom: 20px; right: 20px;
+            background-color: #25d366; color: #FFF; border-radius: 50px; text-align: center;
+            font-size: 30px; box-shadow: 2px 2px 3px #999; z-index: 1000;
+            display: flex; align-items: center; justify-content: center;
+            transition: transform 0.3s ease;
+        }
+        .wp-float:hover { transform: scale(1.1); background-color: #128c7e; }
+
+        /* SABIT NAVBAR PADDING */
+        body { padding-top: 65px; }
+        @media (max-width: 768px) {
+            body { padding-top: 60px; }
+        }
+
+        #drag-container {
+            width: 90%; max-width: 350px; height: 60px; background: white;
+            border-radius: 40px; border: 2px solid #FFB6C1; display: flex; 
+            align-items: center; padding: 5px; position: relative; margin: 20px auto;
+            box-shadow: 0 8px 15px rgba(255,182,193,0.2);
+            touch-action: none;
+        }
+        #heart-slider {
+            width: 50px; height: 50px; background: #FF5E78; border-radius: 50%;
+            display: flex; align-items: center; justify-content: center; color: white;
+            cursor: grab; font-size: 20px; position: absolute; left: 5px; z-index: 10;
+        }
+        .drag-text { width: 100%; text-align: center; color: #FFB6C1; font-weight: bold; font-size: 11px; pointer-events: none; }
+        
+        #mobile-menu { transition: all 0.3s ease-in-out; max-height: 0; overflow: hidden; }
+        #mobile-menu.active { max-height: 400px; }
+
+        .hero-bg { background: radial-gradient(circle, #fff 0%, #fff9e3 100%); }
+
+        /* CARD HOVER EFEKTI */
+        .card-hover {
+            transition: all 0.3s ease;
+            position: relative;
+            overflow: hidden;
+        }
+        .card-hover:hover {
+            transform: translateY(-8px);
+            box-shadow: 0 15px 30px rgba(255, 182, 193, 0.3);
+        }
+        .card-hover::after {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255,255,255,0.2), transparent);
+            transition: left 0.5s ease;
+        }
+        .card-hover:hover::after {
+            left: 100%;
+        }
+
+        /* FLOATING ANIMASYON */
+        @keyframes float {
+            0%, 100% { transform: translateY(0px); }
+            50% { transform: translateY(-10px); }
+        }
+        .float-animation {
+            animation: float 3s ease-in-out infinite;
+        }
+
+        /* PULSE BUTON */
+        @keyframes pulse-button {
+            0%, 100% { box-shadow: 0 0 0 0 rgba(255, 85, 125, 0.7); }
+            50% { box-shadow: 0 0 0 10px rgba(255, 85, 125, 0); }
+        }
+        .pulse-btn:hover {
+            animation: pulse-button 1.5s infinite;
+        }
+    </style>
+</head>
+<body>
+
+    <div id="flower-shower"></div>
+
+    <!-- WHATSAPP BUTON -->
+    <a href="https://wa.me/905446181224" class="wp-float" target="_blank" title="WhatsApp ile İletişime Geç">
+        <i class="fab fa-whatsapp"></i>
+    </a>
+
+    <!-- NAVBAR SABIT -->
+    <nav id="navbar" class="fixed top-0 left-0 right-0 z-[100] transition-all duration-300 px-4 md:px-8 py-3 bg-white bg-opacity-95 backdrop-blur-sm shadow-lg">
+        <div class="flex justify-between items-center max-w-7xl mx-auto">
+            <div onclick="window.location.reload()" class="font-black text-pink-500 tracking-tighter cursor-pointer text-base md:text-xl hover:scale-105 transition-transform duration-200 whitespace-nowrap">
+                🌸 BAL ÇİÇEĞİM
+            </div>
+            
+            <div class="hidden md:flex space-x-6 font-bold text-sm lg:text-base items-center">
+                <a href="#hikayemiz" class="text-gray-700 hover:text-pink-500 transition-colors duration-200 relative group">
+                    Hakkımızda
+                    <span class="absolute bottom-0 left-0 w-0 h-0.5 bg-pink-500 group-hover:w-full transition-all duration-300"></span>
+                </a>
+                <a href="#etkinlikler" class="text-gray-700 hover:text-pink-500 transition-colors duration-200 relative group">
+                    Eğitim
+                    <span class="absolute bottom-0 left-0 w-0 h-0.5 bg-pink-500 group-hover:w-full transition-all duration-300"></span>
+                </a>
+                <a href="#galeri" class="text-gray-700 hover:text-pink-500 transition-colors duration-200 relative group">
+                    Galeri
+                    <span class="absolute bottom-0 left-0 w-0 h-0.5 bg-pink-500 group-hover:w-full transition-all duration-300"></span>
+                </a>
+                <a href="#iletisim" class="bg-pink-500 text-white px-5 py-2 rounded-full hover:bg-pink-600 transition-all duration-200 transform hover:scale-105 pulse-btn">
+                    İletişim
+                </a>
+            </div>
+
+            <button onclick="toggleMenu()" class="md:hidden text-pink-500 text-2xl hover:scale-110 transition-transform">
+                <i id="menu-icon" class="fas fa-bars"></i>
+            </button>
+        </div>
+
+        <!-- MOBİL MENU -->
+        <div id="mobile-menu" class="md:hidden flex flex-col space-y-2 font-bold text-gray-600 text-center bg-white bg-opacity-98 mt-2 p-3 rounded-xl">
+            <a href="#hikayemiz" onclick="toggleMenu()" class="text-gray-700 hover:text-pink-500 hover:bg-pink-50 py-2 rounded-lg transition-all">Hakkımızda</a>
+            <a href="#etkinlikler" onclick="toggleMenu()" class="text-gray-700 hover:text-pink-500 hover:bg-pink-50 py-2 rounded-lg transition-all">Eğitim</a>
+            <a href="#galeri" onclick="toggleMenu()" class="text-gray-700 hover:text-pink-500 hover:bg-pink-50 py-2 rounded-lg transition-all">Galeri</a>
+            <a href="#iletisim" onclick="toggleMenu()" class="bg-gradient-to-r from-pink-500 to-pink-600 text-white py-2 rounded-lg hover:shadow-lg transition-all">İletişim</a>
         </div>
     </nav>
 
-    <section class="py-16 container mx-auto px-6">
-        <div class="max-w-5xl mx-auto bg-white rounded-3xl shadow-xl overflow-hidden grid md:grid-cols-2">
-            
-            <div class="bg-pink-500 p-12 text-white">
-                <h2 class="text-3xl font-bold mb-6">Bize Ulaşın</h2>
-                <p class="mb-8 text-pink-100">Çocuğunuzun geleceği için bir kahve içmeye bekleriz. Sorularınız için formu doldurabilir veya bizi arayabilirsiniz.</p>
-                
-                <div class="space-y-6">
-                    <div class="flex items-center space-x-4">
-                        <span class="text-2xl">📍</span>
-                        <span>İstanbul, Türkiye (Okul Adresi Buraya)</span>
-                    </div>
-                    <div class="flex items-center space-x-4">
-                        <span class="text-2xl">📞</span>
-                        <span>+90 (212) XXX XX XX</span>
-                    </div>
-                    <div class="flex items-center space-x-4">
-                        <span class="text-2xl">✉️</span>
-                        <span>bilgi@balcicegimanaokulu.k12.tr</span>
-                    </div>
-                </div>
-
-                <div class="mt-10 h-48 bg-pink-400 rounded-2xl border-2 border-pink-300 flex items-center justify-center">
-                    <span class="text-sm italic text-pink-100 uppercase tracking-widest">Harita Buraya Gelecek</span>
+    <!-- HERO SECTION -->
+    <section class="hero-bg min-h-[90vh] flex items-center py-8 px-4">
+        <div class="container mx-auto grid md:grid-cols-2 gap-8 items-center text-center md:text-left max-w-6xl">
+            <div data-aos="fade-up">
+                <h1 class="text-4xl md:text-7xl font-bold text-gray-800 leading-tight">
+                    Sevgiyle Atılan <br><span class="text-transparent bg-clip-text bg-gradient-to-r from-pink-500 to-yellow-400">İlk Adımlar</span>
+                </h1>
+                <p class="text-gray-600 text-lg mt-4 mb-8 leading-relaxed">
+                    Kartal'ın en sevilen ve güvenilir anaokulu. Çocuklarınızın mutluluğu bizim önceliğimiz.
+                </p>
+                <div class="flex flex-col sm:flex-row gap-4 justify-center md:justify-start">
+                    <span class="bg-pink-100 text-pink-600 px-4 py-2 rounded-full font-bold text-sm hover:bg-pink-200 transition">✨ Kartal'ın En Sevilen Anaokulu</span>
+                    <a href="#iletisim" class="bg-yellow-400 text-gray-800 px-4 py-2 rounded-full font-bold text-sm hover:bg-yellow-500 transition transform hover:scale-105">📞 Bizi Arayın</a>
                 </div>
             </div>
 
-            <div class="p-12">
-                <form action="https://formspree.io/f/senin-id-buraya" method="POST" class="space-y-5">
-                    <div>
-                        <label class="block text-gray-700 font-semibold mb-2">Adınız Soyadınız</label>
-                        <input type="text" name="ad_soyad" required class="w-full px-4 py-3 rounded-xl border border-gray-200 focus:border-pink-500 focus:ring-2 focus:ring-pink-200 outline-none transition" placeholder="Örn: İsmail DUMAN">
-                    </div>
-                    
-                    <div>
-                        <label class="block text-gray-700 font-semibold mb-2">E-Posta Adresiniz</label>
-                        <input type="email" name="_replyto" required class="w-full px-4 py-3 rounded-xl border border-gray-200 focus:border-pink-500 focus:ring-2 focus:ring-pink-200 outline-none transition" placeholder="ismail@dbilisim.com">
-                    </div>
-
-                    <div class="grid grid-cols-2 gap-4">
-                        <div>
-                            <label class="block text-gray-700 font-semibold mb-2">Telefon</label>
-                            <input type="tel" name="tel" class="w-full px-4 py-3 rounded-xl border border-gray-200 focus:border-pink-500 focus:ring-2 focus:ring-pink-200 outline-none transition" placeholder="05xx...">
-                        </div>
-                        <div>
-                            <label class="block text-gray-700 font-semibold mb-2">Çocuğun Yaşı</label>
-                            <select name="yas" class="w-full px-4 py-3 rounded-xl border border-gray-200 focus:border-pink-500 focus:ring-2 focus:ring-pink-200 outline-none transition bg-white">
-                                <option>2-3 Yaş</option>
-                                <option>3-4 Yaş</option>
-                                <option>4-5 Yaş</option>
-                                <option>5-6 Yaş</option>
-                            </select>
-                        </div>
-                    </div>
-
-                    <div>
-                        <label class="block text-gray-700 font-semibold mb-2">Mesajınız</label>
-                        <textarea name="mesaj" rows="4" class="w-full px-4 py-3 rounded-xl border border-gray-200 focus:border-pink-500 focus:ring-2 focus:ring-pink-200 outline-none transition" placeholder="Sorularınızı buraya yazabilirsiniz..."></textarea>
-                    </div>
-
-                    <button type="submit" class="w-full bg-yellow-400 hover:bg-yellow-500 text-white font-bold py-4 rounded-xl shadow-lg transition duration-300">
-                        Bilgi Formunu Gönder
-                    </button>
-                </form>
+            <div class="mt-6 md:mt-0" data-aos="zoom-in">
+                <img id="main-img" src="1774903310773_1.jpg" class="rounded-[2.5rem] shadow-xl border-4 border-white mx-auto w-full max-w-[300px] md:max-w-md transition-transform duration-300 float-animation">
+                <div id="drag-container">
+                    <div id="heart-slider"><i class="fas fa-heart"></i></div>
+                    <div class="drag-text italic uppercase">Sevgiyle Sağa Çek →</div>
+                </div>
             </div>
         </div>
     </section>
 
+    <!-- HAKKIMIZDA SECTION -->
+    <section id="hikayemiz" class="py-20 bg-white px-4">
+        <div class="container mx-auto grid md:grid-cols-2 gap-10 items-center max-w-5xl">
+            <div data-aos="fade-right">
+                <img src="image_b2a160.jpg" class="rounded-2xl shadow-lg w-full card-hover">
+            </div>
+            <div class="text-center md:text-left" data-aos="fade-left">
+                <h2 class="text-4xl font-bold text-gray-800 mb-6 font-black">Neden Bal Çiçeği?</h2>
+                <p class="text-gray-600 leading-relaxed text-lg mb-6">
+                    Çocuklarımızın bireysel yeteneklerini keşfetmelerine olanak sağlayan, oyun temelli ve sevgi odaklı bir eğitim modeli benimsiyoruz. Her çocuk özel ve benzersiz. Biz, onların kendi hızlarında gelişmelerini destekleriz.
+                </p>
+                <div class="space-y-3 text-gray-700">
+                    <div class="flex items-center gap-3 text-left">
+                        <span class="text-3xl">🌟</span>
+                        <p><strong class="text-pink-500">Uzman Psikolog Desteği</strong> - Çocukların duygusal gelişimi için</p>
+                    </div>
+                    <div class="flex items-center gap-3 text-left">
+                        <span class="text-3xl">🚀</span>
+                        <p><strong class="text-pink-500">İngilizce & Robotik Kodlama</strong> - Geleceğe hazırlık</p>
+                    </div>
+                    <div class="flex items-center gap-3 text-left">
+                        <span class="text-3xl">💖</span>
+                        <p><strong class="text-pink-500">Sevgi Odaklı Eğitim</strong> - Her çocuk özel ve değerli</p>
+                    </div>
+                    <div class="flex items-center gap-3 text-left">
+                        <span class="text-3xl">🎨</span>
+                        <p><strong class="text-pink-500">Yaratıcılık</strong> - Sanat, müzik ve oyun temelli öğrenme</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- ETKİNLİKLER SECTION -->
+    <section id="etkinlikler" class="py-20 bg-gradient-to-b from-yellow-50 to-pink-50 px-4">
+        <h2 class="text-4xl font-bold text-center mb-4 text-gray-800">Eğlenceli Dünyamız 🎉</h2>
+        <p class="text-center text-gray-600 mb-12 max-w-2xl mx-auto">Her gün yeni bir macera, her gün yeni bir öğrenme fırsatı</p>
+        <div class="grid md:grid-cols-2 gap-8 max-w-4xl mx-auto">
+            <div class="bg-white p-6 rounded-2xl shadow-sm card-hover" data-aos="fade-up">
+                <img src="etkinlik2.jpg" class="rounded-xl mb-4 w-full h-56 object-cover">
+                <h3 class="font-bold text-pink-500 text-2xl text-center mb-2">Yaratıcı Atölyeler</h3>
+                <p class="text-gray-600 text-center">Resim, sanat, müzik ve el sanatları ile çocukların yaratıcılığını geliştiriyoruz</p>
+            </div>
+            <div class="bg-white p-6 rounded-2xl shadow-sm card-hover" data-aos="fade-up" data-aos-delay="200">
+                <img src="etkinlik3.jpg" class="rounded-xl mb-4 w-full h-56 object-cover">
+                <h3 class="font-bold text-yellow-500 text-2xl text-center mb-2">Grup Oyunları</h3>
+                <p class="text-gray-600 text-center">Spor, oyunlar ve takım çalışması ile sosyal beceriler geliştirilir</p>
+            </div>
+            <div class="bg-white p-6 rounded-2xl shadow-sm card-hover" data-aos="fade-up" data-aos-delay="400">
+                <img src="etkinlik4.jpg" class="rounded-xl mb-4 w-full h-56 object-cover">
+                <h3 class="font-bold text-blue-500 text-2xl text-center mb-2">Bilişsel Oyunlar</h3>
+                <p class="text-gray-600 text-center">Mantık, problem çözme ve yaratıcı düşünme becerilerini geliştiren aktiviteler</p>
+            </div>
+            <div class="bg-white p-6 rounded-2xl shadow-sm card-hover" data-aos="fade-up" data-aos-delay="600">
+                <img src="1774903310771_4.jpeg" class="rounded-xl mb-4 w-full h-56 object-cover">
+                <h3 class="font-bold text-purple-500 text-2xl text-center mb-2">Oyun Alanı</h3>
+                <p class="text-gray-600 text-center">Güvenli ve eğlenceli oyun alanlarında çocuklarımız fiziksel gelişimlerini sağlıyorlar</p>
+            </div>
+        </div>
+    </section>
+
+    <!-- GALERİ SECTION -->
+    <section id="galeri" class="py-20 bg-white px-4">
+        <h2 class="text-4xl font-bold mb-4 text-center text-gray-800">Okulumuzdan Kareler 📸</h2>
+        <p class="text-center text-gray-600 mb-12 max-w-2xl mx-auto">Çocuklarımızın mutlu anlarını ve gelişimlerini gözlemleyin</p>
+        <div class="grid grid-cols-2 md:grid-cols-4 gap-4 max-w-6xl mx-auto">
+            <div class="relative h-40 rounded-xl overflow-hidden shadow-sm hover:shadow-lg transition card-hover group">
+                <img src="galeri1.jpg" class="w-full h-full object-cover">
+                <div class="absolute inset-0 bg-black bg-opacity-0 group-hover:bg-opacity-30 transition flex items-center justify-center">
+                    <span class="text-white opacity-0 group-hover:opacity-100 transition text-sm font-bold">Oyun Saati</span>
+                </div>
+            </div>
+            <div class="relative h-40 rounded-xl overflow-hidden shadow-sm hover:shadow-lg transition card-hover group">
+                <img src="galeri2.jpg" class="w-full h-full object-cover">
+                <div class="absolute inset-0 bg-black bg-opacity-0 group-hover:bg-opacity-30 transition flex items-center justify-center">
+                    <span class="text-white opacity-0 group-hover:opacity-100 transition text-sm font-bold">Arkadaşlık</span>
+                </div>
+            </div>
+            <div class="relative h-40 rounded-xl overflow-hidden shadow-sm hover:shadow-lg transition card-hover group">
+                <img src="galeri3.jpg" class="w-full h-full object-cover">
+                <div class="absolute inset-0 bg-black bg-opacity-0 group-hover:bg-opacity-30 transition flex items-center justify-center">
+                    <span class="text-white opacity-0 group-hover:opacity-100 transition text-sm font-bold">Yaratıcılık</span>
+                </div>
+            </div>
+            <div class="relative h-40 rounded-xl overflow-hidden shadow-sm hover:shadow-lg transition card-hover group">
+                <img src="galeri4.jpg" class="w-full h-full object-cover">
+                <div class="absolute inset-0 bg-black bg-opacity-0 group-hover:bg-opacity-30 transition flex items-center justify-center">
+                    <span class="text-white opacity-0 group-hover:opacity-100 transition text-sm font-bold">Öğrenme</span>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- İLETİŞİM SECTION -->
+    <section id="iletisim" class="py-20 bg-gradient-to-br from-pink-50 to-yellow-50 px-4">
+        <div class="max-w-5xl mx-auto grid md:grid-cols-2 gap-12 items-stretch">
+            <div data-aos="fade-right">
+                <h2 class="text-4xl font-bold mb-8 text-gray-800 text-center md:text-left">İletişim 📞</h2>
+                <div class="space-y-6">
+                    <div class="bg-white p-6 rounded-2xl shadow-sm hover:shadow-lg transition">
+                        <p class="flex items-start gap-4 text-gray-700">
+                            <i class="fas fa-map-marker-alt text-pink-500 text-2xl mt-1 flex-shrink-0"></i> 
+                            <span class="text-lg">
+                                <strong>Adres:</strong><br>
+                                Bal Çiçeğim Ana Okulu<br>
+                                Cumhuriyet, Kent Sk. No:38 D:40<br>
+                                34876 Kartal/İstanbul
+                            </span>
+                        </p>
+                    </div>
+                    <div class="bg-white p-6 rounded-2xl shadow-sm hover:shadow-lg transition">
+                        <p class="flex items-center gap-4 font-bold text-lg text-gray-700">
+                            <i class="fas fa-phone text-pink-500 text-2xl"></i> 
+                            <a href="tel:05446181224" class="hover:text-pink-500 transition">0544 618 12 24</a>
+                        </p>
+                    </div>
+                    <div class="bg-white p-6 rounded-2xl shadow-sm hover:shadow-lg transition">
+                        <p class="flex items-center gap-4 font-bold text-lg text-gray-700">
+                            <i class="fas fa-whatsapp text-green-500 text-2xl"></i> 
+                            <a href="https://wa.me/905446181224" target="_blank" class="hover:text-green-600 transition">WhatsApp ile İletişim</a>
+                        </p>
+                    </div>
+                    <div class="bg-gradient-to-r from-pink-500 to-pink-600 text-white p-6 rounded-2xl shadow-lg hover:shadow-xl transition">
+                        <p class="text-sm mb-2">⏰ Çalışma Saatleri</p>
+                        <p class="font-bold text-lg">Pazartesi - Cuma<br>08:00 - 17:00</p>
+                    </div>
+                </div>
+            </div>
+            <div class="rounded-3xl overflow-hidden shadow-xl border-8 border-white bg-white h-96 md:h-auto" data-aos="fade-left">
+                <iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3015.777386188747!2d29.203179475682898!3d40.89869787136616!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x14cac5d0383299e1%3A0x890dc9864d8e017!2zw5ZaRUwgQkFMIMOHxLDDh0XEnsSwTSBBTkFPS1VMVQ!5e0!3m2!1str!2str!4v1774900609047!5m2!1str!2str" width="100%" height="100%" style="border:0;" allowfullscreen="" loading="lazy" referrerpolicy="no-referrer-when-downgrade"></iframe>
+            </div>
+        </div>
+    </section>
+
+    <!-- FOOTER -->
+    <footer class="py-8 bg-gray-900 text-center border-t border-gray-800 px-4">
+        <div class="max-w-5xl mx-auto">
+            <h3 class="text-pink-500 font-bold text-xl mb-2">🌸 Bal Çiçeğim Anaokulu</h3>
+            <p class="text-gray-400 text-sm mb-4">Çocuklarınızın güvenli ve mutlu bir ortamda gelişmeleri için buradayız.</p>
+            <p class="text-gray-500 text-xs">© 2026 Bal Çiçeğim Anaokulu - Tüm Hakları Saklıdır</p>
+            <a href="https://www.dbilisim.com/hizmetler/web-tasarim" target="_blank" class="inline-block mt-4 text-gray-400 hover:text-pink-500 transition text-xs">
+                Web Tasarım: D Bilişim Çözümleri
+            </a>
+        </div>
+    </footer>
+
+    <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
+    <script>
+        // AOS İNİTİALİZASYON
+        document.addEventListener('DOMContentLoaded', function() { 
+            AOS.init({ duration: 800, once: true, offset: 50 }); 
+        });
+
+        // MOBİL MENU TOGGLE
+        function toggleMenu() {
+            const menu = document.getElementById('mobile-menu');
+            const icon = document.getElementById('menu-icon');
+            menu.classList.toggle('active');
+            icon.classList.toggle('fa-bars');
+            icon.classList.toggle('fa-times');
+        }
+
+        // DRAG SLIDER FUNCTIONALITY
+        const slider = document.getElementById('heart-slider');
+        const container = document.getElementById('drag-container');
+        const mainImg = document.getElementById('main-img');
+        const shower = document.getElementById('flower-shower');
+        let isDragging = false;
+
+        const startDrag = (e) => { 
+            isDragging = true; 
+            slider.style.cursor = 'grabbing';
+            e.stopPropagation(); 
+        };
+
+        const endDrag = () => {
+            if (!isDragging) return;
+            isDragging = false;
+            slider.style.cursor = 'grab';
+            let currentLeft = parseInt(slider.style.left) || 5;
+            let maxRight = container.offsetWidth - slider.offsetWidth - 5;
+            if (currentLeft < maxRight - 10) {
+                slider.style.transition = 'left 0.3s ease';
+                slider.style.left = '5px';
+                slider.style.transform = 'scale(1)';
+                mainImg.style.transform = 'scale(1)';
+                setTimeout(() => { slider.style.transition = 'none'; }, 300);
+            }
+        };
+
+        const onMove = (e) => {
+            if (!isDragging) return;
+            let clientX = e.clientX || (e.touches && e.touches[0].clientX);
+            let rect = container.getBoundingClientRect();
+            let newLeft = clientX - rect.left - (slider.offsetWidth / 2);
+            let maxRight = container.offsetWidth - slider.offsetWidth - 5;
+            if (newLeft < 5) newLeft = 5;
+            if (newLeft > maxRight) newLeft = maxRight;
+            slider.style.left = newLeft + 'px';
+            let progress = newLeft / maxRight;
+            slider.style.transform = `scale(${1 + progress})`;
+            mainImg.style.transform = `scale(${1 + (progress * 0.05)})`;
+            if (newLeft >= maxRight - 2) {
+                isDragging = false;
+                slider.style.cursor = 'grab';
+                startFlowerShower();
+                slider.style.background = "#FFD700";
+            }
+        };
+
+        slider.addEventListener('mousedown', startDrag);
+        window.addEventListener('mouseup', endDrag);
+        window.addEventListener('mousemove', onMove);
+        slider.addEventListener('touchstart', startDrag, {passive: false});
+        window.addEventListener('touchend', endDrag);
+        window.addEventListener('touchmove', onMove, {passive: false});
+
+        // FLOWER SHOWER ANIMASYON
+        function startFlowerShower() {
+            const icons = ['🌸', '🌼', '💖', '✨', '🎉'];
+            for (let i = 0; i < 80; i++) {
+                setTimeout(() => {
+                    const flower = document.createElement('div');
+                    flower.className = 'flower';
+                    flower.innerHTML = icons[Math.floor(Math.random() * icons.length)];
+                    flower.style.left = Math.random() * 100 + 'vw';
+                    flower.style.animationDuration = (Math.random() * 2 + 2) + 's';
+                    shower.appendChild(flower);
+                    setTimeout(() => flower.remove(), 4000);
+                }, i * 40);
+            }
+        }
+
+        // SMOOTH SCROLL
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function (e) {
+                if (this.getAttribute('href') !== '#') {
+                    e.preventDefault();
+                    const target = document.querySelector(this.getAttribute('href'));
+                    if (target) {
+                        target.scrollIntoView({
+                            behavior: 'smooth',
+                            block: 'start'
+                        });
+                    }
+                }
+            });
+        });
+    </script>
 </body>
 </html>
