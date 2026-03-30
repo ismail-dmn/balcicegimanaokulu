@@ -1,0 +1,231 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>Bal Çiçeğim Anaokulu | Kartal</title>
+    <link href="https://fonts.googleapis.com/css2?family=Quicksand:wght@400;600;700&display=swap" rel="stylesheet">
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    
+    <style>
+        html, body { overflow-x: hidden; width: 100%; position: relative; touch-action: manipulation; }
+        body { font-family: 'Quicksand', sans-serif; scroll-behavior: smooth; background-color: #fffdf5; }
+        
+        #flower-shower { position: fixed; top: 0; left: 0; width: 100%; height: 100%; pointer-events: none; z-index: 9999; }
+        .flower { position: absolute; top: -50px; font-size: 20px; animation: fall linear forwards; }
+        @keyframes fall { to { transform: translateY(110vh) rotate(360deg); } }
+
+        #drag-container {
+            width: 90%; max-width: 350px; height: 60px; background: white;
+            border-radius: 40px; border: 2px solid #FFB6C1; display: flex; 
+            align-items: center; padding: 5px; position: relative; margin: 20px auto;
+            box-shadow: 0 8px 15px rgba(255,182,193,0.2);
+            touch-action: none;
+        }
+        #heart-slider {
+            width: 50px; height: 50px; background: #FF5E78; border-radius: 50%;
+            display: flex; align-items: center; justify-content: center; color: white;
+            cursor: grab; font-size: 20px; position: absolute; left: 5px; z-index: 10;
+        }
+        .drag-text { width: 100%; text-align: center; color: #FFB6C1; font-weight: bold; font-size: 11px; pointer-events: none; }
+        
+        /* Mobil Menü Animasyonu */
+        #mobile-menu { transition: all 0.3s ease-in-out; max-height: 0; overflow: hidden; }
+        #mobile-menu.active { max-height: 300px; padding: 1rem 0; }
+
+        .hero-bg { background: radial-gradient(circle, #fff 0%, #fff9e3 100%); }
+    </style>
+</head>
+<body>
+
+    <div id="flower-shower"></div>
+
+    <nav class="bg-white/95 backdrop-blur-sm sticky top-0 z-50 shadow-sm px-4 md:px-16 py-4">
+        <div class="flex justify-between items-center">
+            <div onclick="window.location.reload()" class="font-black text-pink-500 tracking-tighter cursor-pointer text-lg md:text-2xl">
+                🌸 BAL ÇİÇEĞİM ANAOKULU
+            </div>
+            
+            <div class="hidden md:flex space-x-6 font-bold text-gray-600">
+                <a href="#hikayemiz" class="hover:text-pink-500">Hakkımızda</a>
+                <a href="#etkinlikler" class="hover:text-pink-500">Eğitim</a>
+                <a href="#galeri" class="hover:text-pink-500">Galeri</a>
+                <a href="#iletisim" class="text-pink-600 border border-pink-200 px-4 py-1 rounded-full">İletişim</a>
+            </div>
+
+            <button onclick="toggleMenu()" class="md:hidden text-pink-500 text-2xl focus:outline-none">
+                <i id="menu-icon" class="fas fa-bars"></i>
+            </button>
+        </div>
+
+        <div id="mobile-menu" class="md:hidden flex flex-col space-y-4 font-bold text-gray-600 text-center">
+            <a href="#hikayemiz" onclick="toggleMenu()" class="hover:text-pink-500">Hakkımızda</a>
+            <a href="#etkinlikler" onclick="toggleMenu()" class="hover:text-pink-500">Eğitim</a>
+            <a href="#galeri" onclick="toggleMenu()" class="hover:text-pink-500">Galeri</a>
+            <a href="#iletisim" onclick="toggleMenu()" class="text-pink-500">İletişim</a>
+        </div>
+    </nav>
+
+    <section class="hero-bg min-h-[85vh] flex items-center py-8 px-4">
+        <div class="container mx-auto grid md:grid-cols-2 gap-8 items-center text-center md:text-left">
+            <div data-aos="fade-up">
+                <h1 class="text-4xl md:text-7xl font-bold text-gray-800 leading-tight">
+                    Sevgiyle Atılan <br><span class="text-pink-500">İlk Adımlar</span>
+                </h1>
+                <div class="mt-8">
+                    <a href="https://wa.me/905446181224" class="bg-green-500 text-white px-6 py-4 rounded-xl font-bold shadow-lg inline-flex items-center text-sm">
+                        <i class="fab fa-whatsapp mr-2 text-xl"></i> Bilgi: 0544 618 12 24
+                    </a>
+                </div>
+            </div>
+
+            <div class="mt-6 md:mt-0" data-aos="zoom-in">
+                <img id="main-img" src="hero.png" class="rounded-[2.5rem] shadow-xl border-4 border-white mx-auto w-full max-w-[300px] md:max-w-md transition-transform duration-300">
+                <div id="drag-container">
+                    <div id="heart-slider"><i class="fas fa-heart"></i></div>
+                    <div class="drag-text italic uppercase">Sevgiyle Sağa Çek →</div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section id="hikayemiz" class="py-20 bg-white px-6">
+        <div class="container mx-auto grid md:grid-cols-2 gap-10 items-center max-w-5xl">
+            <img src="image_b2a160.jpg" class="rounded-2xl shadow-lg w-full">
+            <div class="text-center md:text-left">
+                <h2 class="text-3xl font-bold text-gray-800 mb-4">Neden Bal Çiçeği?</h2>
+                <p class="text-gray-600 leading-relaxed text-lg">
+                    Kartal'da çocuklarımızın güvenle büyüyeceği, her gün yeni bir şeyler keşfedeceği sıcak bir yuva sunuyoruz.
+                </p>
+            </div>
+        </div>
+    </section>
+
+    <section id="etkinlikler" class="py-20 bg-yellow-50 px-6">
+        <h2 class="text-3xl font-bold text-center mb-12 italic">Eğlenceli Dünyamız</h2>
+        <div class="grid md:grid-cols-2 gap-8 max-w-4xl mx-auto">
+            <div class="bg-white p-4 rounded-2xl shadow-sm" data-aos="fade-up">
+                <img src="etkinlik2.jpg" class="rounded-xl mb-4 w-full h-52 object-cover">
+                <h3 class="font-bold text-pink-500 text-xl text-center">Yaratıcı Atölyeler</h3>
+            </div>
+            <div class="bg-white p-4 rounded-2xl shadow-sm" data-aos="fade-up" data-aos-delay="200">
+                <img src="etkinlik3.jpg" class="rounded-xl mb-4 w-full h-52 object-cover">
+                <h3 class="font-bold text-yellow-500 text-xl text-center">Grup Oyunları</h3>
+            </div>
+        </div>
+    </section>
+
+    <section id="galeri" class="py-20 bg-white px-6 text-center">
+        <h2 class="text-3xl font-bold mb-12">Okulumuzdan Kareler</h2>
+        <div class="grid grid-cols-2 md:grid-cols-4 gap-4 max-w-5xl mx-auto">
+            <img src="galeri1.jpg" class="rounded-xl h-40 w-full object-cover shadow-sm">
+            <img src="galeri2.jpg" class="rounded-xl h-40 w-full object-cover shadow-sm">
+            <img src="galeri3.jpg" class="rounded-xl h-40 w-full object-cover shadow-sm">
+            <img src="galeri4.jpg" class="rounded-xl h-40 w-full object-cover shadow-sm">
+        </div>
+    </section>
+
+    <section id="iletisim" class="py-20 bg-pink-50 px-6">
+        <div class="max-w-5xl mx-auto grid md:grid-cols-2 gap-12 items-center">
+            <div>
+                <h2 class="text-3xl font-bold mb-8 italic text-pink-600 text-center md:text-left">İletişim Bilgileri</h2>
+                <div class="space-y-6 text-gray-700 text-center md:text-left">
+                    <p class="flex items-start justify-center md:justify-start">
+                        <i class="fas fa-map-marker-alt mt-1 mr-4 text-pink-500"></i> 
+                        Cumhuriyet, Kent Sk. No:38 D:40, <br>34876 Kartal/İstanbul
+                    </p>
+                    <p class="flex items-center justify-center md:justify-start"><i class="fas fa-phone mr-4 text-pink-500"></i> 0544 618 12 24</p>
+                </div>
+            </div>
+            <div class="rounded-3xl overflow-hidden shadow-xl h-80 border-8 border-white">
+                <iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3014.331562093556!2d29.2155!3d40.9085!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x14cac3924f7936a7%3A0xc3f8f170428d085d!2sCumhuriyet%2C%20Kent%20Sk.%20No%3A38%20D%3A40%2C%2034876%20Kartal%2F%C4%B0stanbul!5e0!3m2!1str!2str!4v1711830000000!5m2!1str!2str" width="100%" height="100%" style="border:0;" allowfullscreen="" loading="lazy"></iframe>
+            </div>
+        </div>
+    </section>
+
+    <footer class="py-12 bg-white text-center border-t border-gray-100">
+        <p class="text-gray-400 text-xs tracking-widest uppercase mb-2">Hazırlayan</p>
+        <p class="text-gray-800 font-black text-xl tracking-tighter uppercase">D BİLİŞİM ÇÖZÜMLERİ</p>
+        <p class="text-gray-400 text-[10px] mt-4">© 2026 Bal Çiçeğim Anaokulu</p>
+    </footer>
+
+    <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
+    <script>
+        document.addEventListener('DOMContentLoaded', function() { AOS.init({ duration: 800, once: true }); });
+
+        // Mobil Menü Fonksiyonu
+        function toggleMenu() {
+            const menu = document.getElementById('mobile-menu');
+            const icon = document.getElementById('menu-icon');
+            menu.classList.toggle('active');
+            icon.classList.toggle('fa-bars');
+            icon.classList.toggle('fa-times');
+        }
+
+        // Kalp Slider
+        const slider = document.getElementById('heart-slider');
+        const container = document.getElementById('drag-container');
+        const mainImg = document.getElementById('main-img');
+        const shower = document.getElementById('flower-shower');
+        let isDragging = false;
+
+        const startDrag = (e) => { isDragging = true; e.stopPropagation(); };
+        const endDrag = () => {
+            if (!isDragging) return;
+            isDragging = false;
+            let currentLeft = parseInt(slider.style.left) || 5;
+            let maxRight = container.offsetWidth - slider.offsetWidth - 5;
+            if (currentLeft < maxRight - 10) {
+                slider.style.transition = 'left 0.3s ease';
+                slider.style.left = '5px';
+                slider.style.transform = 'scale(1)';
+                mainImg.style.transform = 'scale(1)';
+                setTimeout(() => { slider.style.transition = 'none'; }, 300);
+            }
+        };
+
+        const onMove = (e) => {
+            if (!isDragging) return;
+            let clientX = e.clientX || (e.touches && e.touches[0].clientX);
+            let rect = container.getBoundingClientRect();
+            let newLeft = clientX - rect.left - (slider.offsetWidth / 2);
+            let maxRight = container.offsetWidth - slider.offsetWidth - 5;
+            if (newLeft < 5) newLeft = 5;
+            if (newLeft > maxRight) newLeft = maxRight;
+            slider.style.left = newLeft + 'px';
+            let progress = newLeft / maxRight;
+            slider.style.transform = `scale(${1 + progress})`;
+            mainImg.style.transform = `scale(${1 + (progress * 0.05)})`;
+            if (newLeft >= maxRight - 2) {
+                isDragging = false;
+                startFlowerShower();
+                slider.style.background = "#FFD700";
+            }
+        };
+
+        slider.addEventListener('mousedown', startDrag);
+        window.addEventListener('mouseup', endDrag);
+        window.addEventListener('mousemove', onMove);
+        slider.addEventListener('touchstart', startDrag, {passive: false});
+        window.addEventListener('touchend', endDrag);
+        window.addEventListener('touchmove', onMove, {passive: false});
+
+        function startFlowerShower() {
+            const icons = ['🌸', '🌼', '💖', '✨'];
+            for (let i = 0; i < 80; i++) {
+                setTimeout(() => {
+                    const flower = document.createElement('div');
+                    flower.className = 'flower';
+                    flower.innerHTML = icons[Math.floor(Math.random() * icons.length)];
+                    flower.style.left = Math.random() * 100 + 'vw';
+                    flower.style.animationDuration = (Math.random() * 2 + 2) + 's';
+                    shower.appendChild(flower);
+                    setTimeout(() => flower.remove(), 4000);
+                }, i * 40);
+            }
+        }
+    </script>
+</body>
+</html>
